@@ -11,8 +11,6 @@ interface UserAttributes {
   profilePhotoUrl: string,
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, "id">{}
-
 module.exports = (sequelize: any, DataTypes: any) => {
   class User extends Model<UserAttributes> implements UserAttributes {
     email!: string;
@@ -43,11 +41,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
     },
     profilePhotoUrl: {
       type: DataTypes.STRING,
+      allowNull: true
     }
   }, {
     sequelize,
     modelName: "User"
   });
-
   return User;
 }
