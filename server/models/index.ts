@@ -5,4 +5,6 @@ const env = process.env.NODE_ENV || "development";
 const config = dbConfig[env];
 const { database, username, password } = config;
 
-export const sequelize = new Sequelize(database, username, password, config);
+const db = new Sequelize(database, username, password, config);
+
+export default db;

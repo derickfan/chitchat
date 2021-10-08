@@ -6,8 +6,8 @@ import {
 	HasManyGetAssociationsMixin,
 	Model,
 	UUIDV4,
-} from "sequelize/types";
-import { sequelize } from ".";
+} from "sequelize";
+import db from ".";
 import Message from "./Message";
 import User from "./User";
 
@@ -21,7 +21,7 @@ class Conversation
 	implements ConversationAttribues
 {
 	public id!: string;
-	public name: string | null;
+	public name: string | undefined;
 
 	public readonly createdAt!: Date;
 	public readonly updatedAt!: Date;
@@ -53,13 +53,13 @@ Conversation.init(
 		},
 	},
 	{
-		sequelize,
+		sequelize: db,
 		tableName: "conersation",
 		modelName: "conversation",
 	}
 );
 
-const User_Conversation = sequelize.define("User_Conversation", {});
+const User_Conversation = db.define("User_Conversation", {});
 
 User.belongsToMany(Conversation, { through: User_Conversation });
 Conversation.belongsToMany(User, { through: User_Conversation });
@@ -69,7 +69,5 @@ User.hasMany(Message, {
 	sourceKey: "username",
 });
 Conversation.hasMany(Message, { foreignKey: { allowNull: false } });
-
-sequelize.sync();
 
 export default Conversation;

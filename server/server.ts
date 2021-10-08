@@ -2,6 +2,19 @@ import express from "express";
 import path from "path";
 import { createServer } from "http";
 import { Server } from "../node_modules/socket.io/dist";
+import db from "./models/index";
+import User from "./models/User";
+import Conversation from "./models/Conversation";
+import Message from "./models/Message";
+
+db.sync().then(() => {
+	console.log("Connected to the database");
+});
+
+User.sync();
+Conversation.sync();
+Message.sync();
+
 
 const PORT = process.env.PORT || 5000;
 

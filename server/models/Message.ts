@@ -4,8 +4,8 @@ import {
 	HasOneGetAssociationMixin,
 	Model,
 	UUIDV4,
-} from "sequelize/types";
-import { sequelize } from ".";
+} from "sequelize";
+import db from ".";
 import Conversation from "./Conversation";
 import User from "./User";
 
@@ -45,12 +45,10 @@ Message.init(
 		},
 	},
 	{
-		sequelize,
+		sequelize: db,
 		tableName: "message",
 		modelName: "message",
 	}
 );
-
-sequelize.sync();
 
 export default Message;

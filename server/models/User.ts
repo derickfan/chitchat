@@ -1,6 +1,6 @@
-import { DataTypes, Model, UUIDV4 } from "sequelize/types";
+import { DataTypes, Model, UUIDV4 } from "sequelize";
 import bcrypt from "bcrypt";
-import { sequelize } from ".";
+import db from ".";
 
 interface UserAttributes {
 	id?: string;
@@ -17,7 +17,7 @@ class User extends Model<UserAttributes> implements UserAttributes {
 	public email!: string;
 	public hashedPassword!: string;
 	public password!: string;
-	public profilePhotoUrl: string | null;
+	public profilePhotoUrl: string | undefined;
 
 	public readonly createdAt!: Date;
 	public readonly updatedAt!: Date;
@@ -58,7 +58,7 @@ User.init(
 		},
 	},
 	{
-		sequelize,
+		sequelize: db,
 		tableName: "user",
 		modelName: "user",
 		hooks: {
@@ -70,9 +70,5 @@ User.init(
 		},
 	}
 );
-
-sequelize.sync({
-	force: true,
-});
 
 export default User;
