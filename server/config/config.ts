@@ -1,4 +1,8 @@
-export default {
+interface DbConfigType {
+	[key: string]: { [key: string]: string };
+}
+
+const dbConfigs: DbConfigType = {
 	"development": {
 		"username": "derickfan",
 		"password": "password",
@@ -7,3 +11,5 @@ export default {
 		"dialect": "postgres"
 	}
 };
+
+export default dbConfigs;
