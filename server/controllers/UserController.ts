@@ -18,7 +18,7 @@ export const createUser = async (data: UserData): Promise<User> => {
 		const user = await User.create(data);
 		return user;
 	} catch (error) {
-		throw new Error(error);
+		throw new Error("Unknown Error");
 	}
 };
 
@@ -49,10 +49,14 @@ export const updateUser = async (
 				username: username,
 			},
 		});
-		user.update(key, value);
-		return user;
+		if (user) {
+			user.update(key, value);
+			return user;	
+		} else {
+			throw new Error("User does not exist");
+		}
 	} catch (error) {
-		throw new Error(error);
+		throw new Error("Unknown Error");
 	}
 };
 
@@ -71,8 +75,12 @@ export const deleteUser = async ( username: string, password: string ): Promise<
 				password: password,
 			}
 		});
-		await user.destroy();
+		if (user) {
+			await user.destroy();
+		} else {
+			throw new Error("User does not exist");
+		}
 	} catch (error) {
-		throw new Error(error);
+		throw new Error("Unknown Error");
 	}
 };
