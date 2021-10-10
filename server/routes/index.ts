@@ -7,6 +7,6 @@ router.get("/", (req, res) => {
 	res.status(200).json({ data: "API Endpoint Online" });
 });
 
-router.use("/user", UserRouter);
+router.use("/users", UserRouter);
 
 export default router;

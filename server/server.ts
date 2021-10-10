@@ -6,6 +6,7 @@ import db from "./models/index";
 import User from "./models/User";
 import Conversation from "./models/Conversation";
 import Message from "./models/Message";
+import router from "./routes";
 
 db.sync().then(() => {
 	console.log("Connected to the database");
@@ -29,6 +30,8 @@ const io = new Server(http, {
 });
 
 app.use(express.static("../client/build"));
+
+app.use("/api", router);
 
 http.listen(PORT, () => {
 	console.log(`Server listening on PORT:${PORT}`);
