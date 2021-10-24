@@ -1,11 +1,13 @@
 import React from 'react';
 import './App.css';
+import { UserProvider } from './hooks/UserContext';
+import RouterPage from './pages/RouterPage';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hello World</h1>
-    </div>
+    <UserProvider>
+			<RouterPage />
+		</UserProvider>
   );
 }
 
