@@ -1,9 +1,9 @@
-import { Container, TextField, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import React from "react";
 import LoginForm from "../components/LoginForm";
 import SignupForm from "../components/SignupForm";
 import { useToggle } from "../hooks/ToggleState";
-import { CenteredFlexContainer, FlexContainer } from "../styles/styles";
+import { CenteredFlexContainer } from "../styles/styles";
 
 const WelcomePage = () => {
 	const [creatingNewUser, toggleCreatingNewUser] = useToggle(false);
@@ -12,9 +12,9 @@ const WelcomePage = () => {
 		<CenteredFlexContainer>
 			<Typography variant="h3">Chit Chat</Typography>
 			{creatingNewUser ? (
-				<SignupForm loginUser={toggleCreatingNewUser} />
+				<SignupForm createNewUser={toggleCreatingNewUser} />
 			) : (
-				<LoginForm createNewUser={toggleCreatingNewUser} />
+				<LoginForm loginUser={toggleCreatingNewUser} />
 			)}
 		</CenteredFlexContainer>
 	);

@@ -6,7 +6,7 @@ import { UserContext } from "../hooks/UserContext";
 import { Container, Grid, Typography, Button } from "@mui/material";
 
 interface IProps {
-	createNewUser: () => void;
+	loginUser: () => void;
 }
 
 interface FormData {
@@ -20,7 +20,7 @@ const initialValues: FormData = {
 };
 
 const LoginForm = (props: IProps) => {
-	const { createNewUser } = props;
+	const { loginUser } = props;
 
 	const login = async (
 		values: FormData,
@@ -77,7 +77,7 @@ const LoginForm = (props: IProps) => {
 								<Button
 									disableElevation={true}
 									fullWidth
-									onClick={createNewUser}
+									onClick={loginUser}
 									disabled={isSubmitting}
 								>
 									Sign Up

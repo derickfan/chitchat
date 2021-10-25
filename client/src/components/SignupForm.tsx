@@ -5,7 +5,7 @@ import GridItems from "./GridItems";
 import TextInput from "./TextInput";
 
 interface IProps {
-	loginUser?: () => void;
+	createNewUser: () => void;
 }
 
 interface FormData {
@@ -21,7 +21,7 @@ const initialvalues: FormData = {
 };
 
 const SignupForm = (props: IProps) => {
-	const { loginUser } = props;
+	const { createNewUser } = props;
 
 	const signup = async (
 		values: FormData,
@@ -77,7 +77,7 @@ const SignupForm = (props: IProps) => {
 									disableElevation={true}
 									fullWidth
 									disabled={isSubmitting}
-									onClick={loginUser}
+									onClick={createNewUser}
 								>
 									Back
 								</Button>
