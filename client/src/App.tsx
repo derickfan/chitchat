@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./App.css";
 import { UserProvider } from "./hooks/UserContext";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import RouterPage from "./pages/RouterPage";
-import { CssBaseline } from "@mui/material";
+import { Button, CssBaseline, styled } from "@mui/material";
+import { ThemeContext } from "./hooks/ThemeContext";
 
 function App() {
+	const { darkMode, toggleDarkMode } = useContext(ThemeContext);
+
 	const theme = createTheme({
 		palette: {
-			mode: "dark",
+			mode: darkMode ? "dark" : "light",
 		},
 		components: {
 			MuiOutlinedInput: {
 				styleOverrides: {
 					input: {
-						"background-color": "black"
+						"background-color": darkMode ? "black" : "white"
 					}
 				},
 			},
@@ -25,6 +28,7 @@ function App() {
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
 			<UserProvider>
+				<AbsoluteButton onClick={toggleDarkMode}>Toggle</AbsoluteButton>
 				<RouterPage />
 			</UserProvider>
 		</ThemeProvider>
@@ -32,3 +36,7 @@ function App() {
 }
 
 export default App;
+
+const AbsoluteButton = styled(Button)`
+	position: absolute;
+`

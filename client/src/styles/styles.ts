@@ -12,3 +12,10 @@ export const FlexContainer = styled(Container)`
 export const CenteredFlexContainer = styled(FlexContainer)`
 	align-items: center;
 `;
+
+export const FormContainer = styled(Container)<{ darkMode: boolean}>`
+	display: flex;
+	align-items: center;
+	margin: 1rem;
+	height: 30rem;
+`;

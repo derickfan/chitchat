@@ -1,6 +1,8 @@
-import { Button, Container, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers } from "formik";
-import { useState } from "react";
+import { useContext } from "react";
+import { ThemeContext } from "../hooks/ThemeContext";
+import { FormContainer } from "../styles/styles";
 import GridItems from "./GridItems";
 import TextInput from "./TextInput";
 
@@ -21,11 +23,12 @@ const initialvalues: FormData = {
 };
 
 const SignupForm = (props: IProps) => {
+	const { darkMode } = useContext(ThemeContext);
 	const { createNewUser } = props;
 
 	const signup = async (
 		values: FormData,
-		actions: FormikHelpers<FormData>
+		{ setSubmitting }: FormikHelpers<FormData>
 	) => {};
 
 	const generateFields = (values: FormData): JSX.Element => {
@@ -44,7 +47,7 @@ const SignupForm = (props: IProps) => {
 	};
 
 	return (
-		<Container maxWidth="xs">
+		<FormContainer darkMode={darkMode} maxWidth="xs">
 			<Formik
 				initialValues={initialvalues}
 				onSubmit={(values, actions) => signup(values, actions)}
@@ -86,7 +89,7 @@ const SignupForm = (props: IProps) => {
 					</Form>
 				)}
 			</Formik>
-		</Container>
+		</FormContainer>
 	);
 };
 

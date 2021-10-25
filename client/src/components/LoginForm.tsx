@@ -1,9 +1,10 @@
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import TextInput from "./TextInput";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import GridItems from "./GridItems";
-import { UserContext } from "../hooks/UserContext";
-import { Container, Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button } from "@mui/material";
+import { FormContainer } from "../styles/styles";
+import { ThemeContext } from "../hooks/ThemeContext";
 
 interface IProps {
 	loginUser: () => void;
@@ -20,6 +21,7 @@ const initialValues: FormData = {
 };
 
 const LoginForm = (props: IProps) => {
+	const { darkMode } = useContext(ThemeContext);
 	const { loginUser } = props;
 
 	const login = async (
@@ -43,7 +45,7 @@ const LoginForm = (props: IProps) => {
 	};
 
 	return (
-		<Container maxWidth="xs">
+		<FormContainer darkMode={darkMode} maxWidth="xs">
 			<Formik
 				initialValues={initialValues}
 				onSubmit={(values, actions) => {
@@ -87,7 +89,7 @@ const LoginForm = (props: IProps) => {
 					</Form>
 				)}
 			</Formik>
-		</Container>
+		</FormContainer>
 	);
 };
 
