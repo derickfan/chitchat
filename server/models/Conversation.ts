@@ -59,6 +59,8 @@ Conversation.init(
 	}
 );
 
+Conversation.sync();
+
 const User_Conversation = db.define("User_Conversation", {});
 
 User.belongsToMany(Conversation, { through: User_Conversation });

@@ -51,4 +51,6 @@ Message.init(
 	}
 );
 
+Message.sync();
+
 export default Message;
