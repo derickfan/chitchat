@@ -1,8 +1,9 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers } from "formik";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { instance } from "../api";
 import { ThemeContext } from "../hooks/ThemeContext";
-import { FormContainer } from "../styles/styles";
+import { CustomTypography, FormContainer } from "../styles/styles";
 import GridItems from "./GridItems";
 import TextInput from "./TextInput";
 
@@ -25,11 +26,28 @@ const initialvalues: FormData = {
 const SignupForm = (props: IProps) => {
 	const { darkMode } = useContext(ThemeContext);
 	const { createNewUser } = props;
+	const [error, setError] = useState<string>("");
+	const [success, setSuccess] = useState<boolean>(false);
 
 	const signup = async (
 		values: FormData,
 		{ setSubmitting }: FormikHelpers<FormData>
-	) => {};
+	) => {
+		setError("");
+		setSuccess(false);
+		setSubmitting(true);
+		await instance
+			.post("/user/signup", values)
+			.then(() => {
+				console.log("Signup Successful");
+				setSuccess(true);
+			})
+			.catch((err) => {
+				setError(err);
+				console.error(err);
+			});
+		setSubmitting(false);
+	};
 
 	const generateFields = (values: FormData): JSX.Element => {
 		return (
@@ -66,6 +84,17 @@ const SignupForm = (props: IProps) => {
 									Sign Up
 								</Typography>
 								{generateFields(initialvalues)}
+								{success ? (
+									<CustomTypography customColor="#11FF44">
+										User successfully created
+									</CustomTypography>
+								) : error ? (
+									<Typography color="error">
+										Error: User was not created
+									</Typography>
+								) : (
+									<></>
+								)}
 								<Button
 									variant="contained"
 									color="primary"

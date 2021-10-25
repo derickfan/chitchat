@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 
 export const FlexContainer = styled(Container)`
 	height: 100%;
@@ -16,6 +16,12 @@ export const CenteredFlexContainer = styled(FlexContainer)`
 export const FormContainer = styled(Container)<{ darkMode: boolean}>`
 	display: flex;
 	align-items: center;
+	/* border: 1rem solid ${p => p.darkMode ? 'white' : 'black' }; */
+	/* border-radius: 2rem; */
 	margin: 1rem;
 	height: 30rem;
+`;
+
+export const CustomTypography = styled(Typography)<{ customColor: string}>`
+	color: ${p => p.customColor}
 `;
