@@ -18,6 +18,7 @@ export const createUser = async (data: UserData): Promise<User> => {
 		const user = await User.create(data);
 		return user;
 	} catch (error) {
+		console.error(error);
 		throw new Error("Unknown Error");
 	}
 };

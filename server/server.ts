@@ -31,6 +31,7 @@ const io = new Server(http, {
 
 app.use(express.static("../client/build"));
 
+app.use(express.json());
 app.use("/api", router);
 
 http.listen(PORT, () => {
