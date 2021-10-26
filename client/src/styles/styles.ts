@@ -16,8 +16,6 @@ export const CenteredFlexContainer = styled(FlexContainer)`
 export const FormContainer = styled(Container)<{ darkMode: boolean}>`
 	display: flex;
 	align-items: center;
-	/* border: 1rem solid ${p => p.darkMode ? 'white' : 'black' }; */
-	/* border-radius: 2rem; */
 	margin: 1rem;
 	height: 30rem;
 `;

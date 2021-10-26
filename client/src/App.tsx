@@ -11,8 +11,6 @@ function App() {
 	const { darkMode, toggleDarkMode } = useContext(ThemeContext);
 
 	const theme = createTheme({
-		// valid: {
-		// },
 		palette: {
 			// Applying this to a Typography does not work???
 			success: { main: green[500] },
