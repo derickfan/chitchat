@@ -1,7 +1,9 @@
 import { Button } from "@mui/material";
 import { useContext } from "react";
 import { instance } from "../api";
+import ConversationList from "../components/ConversationList";
 import { UserContext } from "../hooks/UserContext";
+import { CenteredFlexContainer } from "../styles/styles";
 
 const HomePage = () => {
 	const { setUser } = useContext(UserContext);
@@ -19,8 +21,11 @@ const HomePage = () => {
 	};
 
 	return (
-		<div>
-			<h1>Home Page</h1>
+		<CenteredFlexContainer>
+			<div>
+				<h1>ChitChat</h1>
+			</div>
+			<ConversationList />
 			<Button
 				variant="outlined"
 				color="primary"
@@ -31,7 +36,7 @@ const HomePage = () => {
 			>
 				Logout
 			</Button>
-		</div>
+		</CenteredFlexContainer>
 	);
 };
 
