@@ -42,4 +42,5 @@ export default App;
 
 const AbsoluteButton = styled(Button)`
 	position: absolute;
+	right: 0%;
 `;
