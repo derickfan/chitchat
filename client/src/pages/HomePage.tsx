@@ -77,8 +77,8 @@ const HomePage = () => {
 					Logout
 				</Button>
 			</FlexContainer>
-			<FlexContainer direction="column" margin="1rem" width="100%">
-				<Title>{conversation.name}</Title>
+			<FlexContainer direction="column" margin="1rem" padding="1rem 2rem" width="100%">
+				<h1>{conversation.name}</h1>
 				<FlexContainer
 					height="100%"
 					align="flex-start"
@@ -101,11 +101,11 @@ const HomePage = () => {
 						>
 							<ProfilePicture src="https://cdn.discordapp.com/attachments/792881224753872929/875159970444894218/image_2.png" />
 							<MessageBubble
-								color={theme.palette.primary.main}
+								color={e.username === user?.username ? theme.palette.secondary.main : theme.palette.primary.main}
 								textAlign="left"
 								width="fit-content"
 								padding="0.5rem 1rem"
-								margin="0 0 0 1rem"
+								margin="0 1rem"
 							>
 								{e.content}
 							</MessageBubble>
@@ -113,7 +113,7 @@ const HomePage = () => {
 					))}
 				</FlexContainer>
 				<FlexContainer direction="row" height="auto">
-					<TextField placeholder="Enter your message..." fullWidth />
+					<TextField size="small" placeholder="Enter your message..." multiline fullWidth />
 					<Button>Send</Button>
 				</FlexContainer>
 			</FlexContainer>
