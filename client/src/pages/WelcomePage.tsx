@@ -1,22 +1,23 @@
 import { Typography } from "@mui/material";
 import React from "react";
+import FlexContainer from "../components/FlexContainer";
 import LoginForm from "../components/LoginForm";
 import SignupForm from "../components/SignupForm";
 import { useToggle } from "../hooks/ToggleState";
-import { CenteredFlexContainer } from "../styles/styles";
+import { Title } from "../styles/styles";
 
 const WelcomePage = () => {
 	const [creatingNewUser, toggleCreatingNewUser] = useToggle(false);
 
 	return (
-		<CenteredFlexContainer>
-			<Typography variant="h3">Chit Chat</Typography>
+		<FlexContainer>
+			<Title>Chit Chat</Title>
 			{creatingNewUser ? (
 				<SignupForm createNewUser={toggleCreatingNewUser} />
 			) : (
 				<LoginForm loginUser={toggleCreatingNewUser} />
 			)}
-		</CenteredFlexContainer>
+		</FlexContainer>
 	);
 };
 
