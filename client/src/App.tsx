@@ -5,18 +5,33 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import RouterPage from "./pages/RouterPage";
 import { Button, CssBaseline, styled } from "@mui/material";
 import { ThemeContext } from "./hooks/ThemeContext";
-import { green } from "@mui/material/colors";
+import { amber, blue, green, orange, yellow } from "@mui/material/colors";
 
 function App() {
 	const { darkMode, toggleDarkMode } = useContext(ThemeContext);
 
 	const theme = createTheme({
-		// valid: {
-		// },
 		palette: {
 			// Applying this to a Typography does not work???
 			success: { main: green[500] },
 			mode: darkMode ? "dark" : "light",
+			...(darkMode
+				? {
+						primary: {
+							main: "#bf360c",
+						},
+						secondary: {
+							main: "#ff6f00",
+						},
+				  }
+				: {
+					primary: {
+						main: '#00bfa5',
+					},
+					secondary: {
+						main: '#a7ffeb',
+					},
+				  }),
 		},
 		components: {
 			MuiOutlinedInput: {
@@ -44,4 +59,5 @@ export default App;
 
 const AbsoluteButton = styled(Button)`
 	position: absolute;
+	right: 0%;
 `;

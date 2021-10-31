@@ -1,10 +1,14 @@
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import TextInput from "./TextInput";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import GridItems from "./GridItems";
 import { Grid, Typography, Button } from "@mui/material";
 import { FormContainer } from "../styles/styles";
 import { ThemeContext } from "../hooks/ThemeContext";
+import { instance } from "../api";
+import { UserContext } from "../hooks/UserContext";
+import { UserData } from "../types/types";
+import { AxiosResponse } from "axios";
 
 interface IProps {
 	loginUser: () => void;
@@ -22,12 +26,33 @@ const initialValues: FormData = {
 
 const LoginForm = (props: IProps) => {
 	const { darkMode } = useContext(ThemeContext);
+	const { setUser } = useContext(UserContext);
 	const { loginUser } = props;
+	const [error, setError] = useState<string>();
 
 	const login = async (
 		values: FormData,
 		{ setSubmitting }: FormikHelpers<FormData>
-	) => {};
+	) => {
+		setError("");
+		setSubmitting(true);
+
+		instance
+			.post("/user/login", values)
+			.then((response: AxiosResponse<UserData>) => {
+				const user: UserData = response.data;
+				setUser(user);
+				console.log(response);
+			})
+			.catch((error) => {
+				if (error.response) {
+					console.error(error.response.data);
+					setError(error.response.data);
+				}
+				console.error(error);
+			});
+		setSubmitting(false);
+	};
 
 	const generateFields = (values: FormData): JSX.Element => {
 		return (
@@ -66,6 +91,13 @@ const LoginForm = (props: IProps) => {
 									Login
 								</Typography>
 								{generateFields(initialValues)}
+								{!!error ? (
+									<Typography color="error">
+										Error: Could not login
+									</Typography>
+								) : (
+									<></>
+								)}
 								<Button
 									variant="contained"
 									color="primary"

@@ -1,7 +1,131 @@
+import { Button, TextField, useTheme } from "@mui/material";
+import { useContext } from "react";
+import { instance } from "../api";
+import styled from "@emotion/styled";
+import ConversationList from "../components/ConversationList";
+import FlexContainer from "../components/FlexContainer";
+import { UserContext } from "../hooks/UserContext";
+import { ProfilePicture, Title } from "../styles/styles";
+import TextInput from "../components/TextInput";
+import { ConversationData } from "../types/types";
+import { ThemeContext } from "@emotion/react";
+
+const conversation: ConversationData = {
+	id: "1",
+	messages: [
+		{
+			id: "1",
+			username: "johnsmith",
+			content: "Hey my name is John Donut How are you doing?",
+			converstaionId: "1",
+			createdAt: new Date(),
+		},
+		{
+			id: "1",
+			username: "johnsmith",
+			content: "I'm doing fine!",
+			converstaionId: "1",
+			createdAt: new Date(),
+		},
+		{
+			id: "1",
+			username: "derickfan",
+			content:
+				"Hey my name is John Donut How arejsdngsjklnsldkjngldsnglskdnglsdnglsdngsdlgsjklnsldkjngldsnglskdnglsdnglsdngsdlgsjklnsldkjngldsnglskdnglsdnglsdngsdlgsjklnsldkjngldsnglskdnglsdnglsdngsdlgn you doing?",
+			converstaionId: "1",
+			createdAt: new Date(),
+		},
+	],
+	name: "John Smith",
+	users: ["derickfan", "johnsmith"],
+};
+
 const HomePage = () => {
+	const theme = useTheme();
+	const { user, setUser } = useContext(UserContext);
+
+	const logout = () => {
+		instance
+			.post("/user/logout")
+			.then((response) => {
+				setUser(undefined);
+				console.log(response);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
 	return (
-		<h1>Home Page</h1>
+		<FlexContainer direction="row" width="100vw">
+			<FlexContainer
+				direction="column"
+				// outline="1px solid white"
+				padding="1rem 2rem"
+				width="400px"
+			>
+				<Title>ChitChat</Title>
+				<ConversationList />
+				<Button
+					variant="outlined"
+					color="primary"
+					type="submit"
+					onClick={logout}
+					disableElevation={true}
+					fullWidth
+				>
+					Logout
+				</Button>
+			</FlexContainer>
+			<FlexContainer direction="column" margin="1rem" width="100%">
+				<Title>{conversation.name}</Title>
+				<FlexContainer
+					height="100%"
+					align="flex-start"
+					justify="flex-start"
+				>
+					{conversation.messages.map((e) => (
+						<FlexContainer
+							direction={
+								e.username === user?.username
+									? "row-reverse"
+									: "row"
+							}
+							height="auto"
+							width="100%"
+							margin="0.5rem 0"
+							// padding="0.5rem"
+							// width="500px"
+							align="flex-end"
+							justify="flex-start"
+						>
+							<ProfilePicture src="https://cdn.discordapp.com/attachments/792881224753872929/875159970444894218/image_2.png" />
+							<MessageBubble
+								color={theme.palette.primary.main}
+								textAlign="left"
+								width="fit-content"
+								padding="0.5rem 1rem"
+								margin="0 0 0 1rem"
+							>
+								{e.content}
+							</MessageBubble>
+						</FlexContainer>
+					))}
+				</FlexContainer>
+				<FlexContainer direction="row" height="auto">
+					<TextField placeholder="Enter your message..." fullWidth />
+					<Button>Send</Button>
+				</FlexContainer>
+			</FlexContainer>
+		</FlexContainer>
 	);
-}
+};
 
 export default HomePage;
+
+const MessageBubble = styled(FlexContainer)<{ color: string }>`
+	word-break: break-all;
+	max-width: 40rem;
+	background: ${(p) => p.color || "white"};
+	border-radius: 2rem;
+`;
