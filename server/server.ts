@@ -10,13 +10,12 @@ import router from "./routes";
 import expressSession from "express-session";
 import passport from "./middlewares/authentication";
 
-db.sync().then(() => {
+db.sync({
+	force: true
+}).then(() => {
 	console.log("Connected to the database");
 });
 
-User.sync();
-Conversation.sync();
-Message.sync();
 
 const PORT = process.env.PORT || 5000;
 
