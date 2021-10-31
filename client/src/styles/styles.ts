@@ -15,7 +15,8 @@ export const Title = styled.h1`
 
 export const ProfilePicture = styled.img`
 	border-radius: 100%;
-	height: 100%;
+	width: 50px;
+	height: auto;
 `;
 
 export const CustomTypography = styled(Typography)<{ customColor: string }>`
