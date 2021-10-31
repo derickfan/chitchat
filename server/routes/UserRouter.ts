@@ -8,6 +8,15 @@ router.get("/", (req, res) => {
 	res.status(200).json({ data: "User Router Online" });
 });
 
+router.get("/all", async (req, res) => {
+	try {
+		const users = await UserController.getAllUsers();
+		res.status(200).json({ data: users });
+	} catch (error) {
+		res.status(401).json({ error: error });
+	}
+});
+
 router.post("/login", passport.authenticate("local"), (req, res) => {
 	try {
 		res.json(req.user);
