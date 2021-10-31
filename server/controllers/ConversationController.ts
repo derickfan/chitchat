@@ -1,4 +1,4 @@
-import { Op } from "sequelize/types";
+import { Op } from "sequelize";
 import Conversation from "../models/Conversation";
 import Message from "../models/Message";
 import User from "../models/User";
