@@ -7,6 +7,7 @@ import FlexContainer from "../components/FlexContainer";
 import { UserContext } from "../hooks/UserContext";
 import { ProfilePicture, Title } from "../styles/styles";
 import { ConversationData } from "../types/types";
+import React from "react";
 
 const HomePage = () => {
 	const theme = useTheme();
@@ -14,6 +15,7 @@ const HomePage = () => {
 	const [conversations, setConversations] = useState<ConversationData[]>([]);
 	const [selectedConversation, setSelectedConversation] =
 		useState<ConversationData | undefined>();
+	const typingIndicatorRef = React.createRef<HTMLDivElement>();
 
 	useEffect(() => {
 		instance
@@ -23,6 +25,14 @@ const HomePage = () => {
 				setConversations(response.data.data);
 			});
 	}, []);
+
+	useEffect(() => {
+		scrollIntoView()
+	}, [selectedConversation]);
+
+	const scrollIntoView = () => {
+		typingIndicatorRef.current?.scrollIntoView({behavior: "smooth"});
+	}
 
 	const logout = () => {
 		instance
@@ -62,9 +72,9 @@ const HomePage = () => {
 			</FlexContainer>
 			<FlexContainer
 				direction="column"
-				align="flex-start"
+				align="center"
 				margin="1rem"
-				padding="1rem 2rem"
+				padding="1rem 0rem"
 				width="100%"
 			>
 			{
@@ -73,7 +83,7 @@ const HomePage = () => {
 				) : (
 					<>
 						<h1>{selectedConversation.name}</h1>
-						<FlexContainer
+						<Conversation
 							height="100%"
 							align="flex-start"
 							justify="flex-start"
@@ -102,6 +112,7 @@ const HomePage = () => {
 										}
 										textAlign="left"
 										width="fit-content"
+										height="fit-content"
 										padding="0.5rem 1rem"
 										margin="0 1rem"
 									>
@@ -109,7 +120,8 @@ const HomePage = () => {
 									</MessageBubble>
 								</FlexContainer>
 							))}
-						</FlexContainer>
+							<div ref={typingIndicatorRef}>asfsfas</div>
+						</Conversation>
 						<FlexContainer direction="row" height="auto">
 							<TextField
 								size="small"
@@ -117,7 +129,7 @@ const HomePage = () => {
 								multiline
 								fullWidth
 							/>
-							<Button>Send</Button>
+							<Button onClick={scrollIntoView}>Send</Button>
 						</FlexContainer>
 					</>
 				)
@@ -130,8 +142,15 @@ const HomePage = () => {
 export default HomePage;
 
 const MessageBubble = styled(FlexContainer)<{ color: string }>`
-	word-break: break-all;
+	/* word-break: break-all; */
 	max-width: 40rem;
 	background: ${(p) => p.color || "white"};
 	border-radius: 2rem;
 `;
+
+const Conversation = styled(FlexContainer)`
+	overflow: auto;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+`
