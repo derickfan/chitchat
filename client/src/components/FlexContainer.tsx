@@ -11,6 +11,7 @@ interface StyleProps {
 	outline?: string;
 	padding?: string;
 	margin?: string;
+	onClick?: () => void;
 }
 
 interface IProps extends StyleProps {
@@ -18,9 +19,9 @@ interface IProps extends StyleProps {
 }
 
 const FlexContainer = (props: IProps) => {
-	const { children, ...styles } = props;
+	const { children, onClick, ...styles } = props;
 
-	return <StyledFlexContainer {...styles}>{children}</StyledFlexContainer>;
+	return <StyledFlexContainer {...styles} onClick={onClick}>{children}</StyledFlexContainer>;
 };
 
 export default FlexContainer;
@@ -34,7 +35,7 @@ const StyledFlexContainer = styled.div<StyleProps>`
 	height: ${(p) => p.height || "100%"};
 	width: ${(p) => p.width || "100%"};
 	flex-direction: ${(p) => p.direction || "column"};
-	outline: ${(p) => p.outline || "none"};
+	/* outline: ${(p) => p.outline || "1px solid white"}; */
 	padding: ${(p) => p.padding || "0"};
 	margin: ${(p) => p.margin || "0"};
 `;
