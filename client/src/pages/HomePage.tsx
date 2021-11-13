@@ -6,9 +6,7 @@ import ConversationList from "../components/ConversationList";
 import FlexContainer from "../components/FlexContainer";
 import { UserContext } from "../hooks/UserContext";
 import { ProfilePicture, Title } from "../styles/styles";
-import TextInput from "../components/TextInput";
 import { ConversationData } from "../types/types";
-import { ThemeContext } from "@emotion/react";
 
 const conversation: ConversationData = {
 	id: "1",
