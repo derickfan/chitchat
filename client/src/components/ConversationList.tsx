@@ -1,43 +1,19 @@
 import styled from "@emotion/styled";
 import { useTheme } from "@mui/material";
+import React from "react";
 import { ProfilePicture } from "../styles/styles";
 import { ConversationData, MessageData } from "../types/types";
 import FlexContainer from "./FlexContainer";
 
-const ConversationList = () => {
-	const theme = useTheme();
-	// const [conversations, setConversations] = useState<ConversationData[]>([]);
+interface IProps {
+	conversations: ConversationData[];
+	selectConversation: React.Dispatch<React.SetStateAction<ConversationData | undefined>>; 
+}
 
-	const conversations: ConversationData[] = [
-		{
-			id: "1",
-			messages: [
-				{
-					id: "1",
-					username: "johnsmith",
-					content: "Hey my name is John Donut How are you doing?",
-					converstaionId: "1",
-					createdAt: new Date(),
-				},
-			],
-			name: "John Smith",
-			users: ["derickfan", "johnsmith"],
-		},
-		{
-			id: "2",
-			messages: [
-				{
-					id: "2",
-					username: "Janedoe",
-					content: "Goodbye world!",
-					converstaionId: "2",
-					createdAt: new Date(),
-				},
-			],
-			name: "Janedoe",
-			users: ["derickfan", "janedoe"],
-		},
-	];
+const ConversationList = (props: IProps) => {
+	const theme = useTheme();
+	const {conversations, selectConversation} = props;
+	// const [conversations, setConversations] = useState<ConversationData[]>([]);
 
 	const getLatestMessageInfo = (conversation: ConversationData) => {
 		const latestMessage: MessageData =
@@ -46,7 +22,7 @@ const ConversationList = () => {
 	};
 
 	return (
-		<FlexContainer justify="flex-start">
+		<FlexContainer justify="flex-start" width="auto">
 			{conversations.map((conversation) => (
 				<Conversation
 					direction="row"
@@ -54,6 +30,7 @@ const ConversationList = () => {
 					width="400px"
 					padding="0.7rem 0.5rem 0.7rem 1rem"
 					color={theme.palette.secondary.main}
+					onClick={() => selectConversation(conversation)}
 				>
 					<ProfilePicture src="https://cdn.discordapp.com/attachments/792881224753872929/875159970444894218/image_2.png" />
 					<ConversationInfo
