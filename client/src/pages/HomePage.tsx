@@ -11,9 +11,9 @@ import { ConversationData, MessageData } from "../types/types";
 const HomePage = () => {
 	const { user, setUser } = useContext(UserContext);
 	const [conversations, setConversations] = useState<ConversationData[]>([]);
-	const [selectedConversation, setSelectedConversation] =
-		useState<ConversationData | undefined>(undefined);
-
+	const [selectedConversation, setSelectedConversation] = useState<
+		ConversationData | undefined
+	>(undefined);
 
 	useEffect(() => {
 		instance
@@ -37,30 +37,33 @@ const HomePage = () => {
 	};
 
 	const sendMessage = (e: MessageData) => {
-		if (!selectedConversation) throw new Error("Something happened")
+		if (!selectedConversation) throw new Error("Something happened");
 		const newConversation = {
 			...selectedConversation,
-			messages: selectedConversation.messages.concat(e)
-		}
-		setSelectedConversation(newConversation)
-		setConversations((prevState) => {
-			return prevState.map(conversation => {
-				if (selectedConversation?.id !== conversation.id)
+			messages: selectedConversation.messages.concat(e),
+		};
+		setSelectedConversation(newConversation);
+		updateConversationList(e);
+	};
+
+	const updateConversationList = (message: MessageData) => {
+		setConversations((prevConversations) => {
+			return prevConversations.map((conversation) => {
+				if (conversation.id === message.converstaionId) {
+					return {
+						...conversation,
+						messages: conversation.messages.concat(message),
+					};
+				} else {
 					return conversation;
-				else
-					return newConversation;
+				}
 			});
-		})
-	}
+		});
+	};
 
 	return (
 		<FlexContainer direction="row" width="100vw">
-			<FlexContainer
-				direction="column"
-				// outline="1px solid white"
-				padding="1rem 2rem"
-				width="400px"
-			>
+			<FlexContainer direction="column" padding="1rem 2rem" width="400px">
 				<Title>ChitChat</Title>
 				<ConversationList
 					conversations={conversations}
@@ -77,11 +80,16 @@ const HomePage = () => {
 					Logout
 				</Button>
 			</FlexContainer>
-			{
-				selectedConversation ? 
-				<Conversation sendMessage={sendMessage} selectedConversation={selectedConversation} /> 
-				: <h1>Select a conversation or create a new one</h1>
-			}
+			{selectedConversation ? (
+				<Conversation
+					sendMessage={sendMessage}
+					selectedConversation={selectedConversation}
+				/>
+			) : (
+				<FlexContainer>
+					<h1>Select a conversation or create a new one</h1>
+				</FlexContainer>
+			)}
 		</FlexContainer>
 	);
 };
