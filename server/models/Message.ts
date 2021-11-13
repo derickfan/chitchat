@@ -26,11 +26,11 @@ class Message extends Model<MessageAttribues> implements MessageAttribues {
 	public getUser!: HasOneGetAssociationMixin<User>;
 	public addUser!: HasOneCreateAssociationMixin<User>;
 
-  public getConversation!: HasOneGetAssociationMixin<Conversation>;
-  public addConversation!: HasOneCreateAssociationMixin<Conversation>;
+	public getConversation!: HasOneGetAssociationMixin<Conversation>;
+  	public addConversation!: HasOneCreateAssociationMixin<Conversation>;
 
 	public readonly user!: User;
-  public readonly conversation!: Conversation;
+	public readonly conversation!: Conversation;
 }
 
 Message.init(
@@ -50,7 +50,5 @@ Message.init(
 		modelName: "message",
 	}
 );
-
-Message.sync();
 
 export default Message;

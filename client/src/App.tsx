@@ -33,15 +33,6 @@ function App() {
 					},
 				  }),
 		},
-		components: {
-			MuiOutlinedInput: {
-				styleOverrides: {
-					input: {
-						"background-color": darkMode ? "black" : "white",
-					},
-				},
-			},
-		},
 	});
 
 	return (

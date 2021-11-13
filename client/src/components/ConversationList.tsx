@@ -1,9 +1,11 @@
 import styled from "@emotion/styled";
+import { useTheme } from "@mui/material";
 import { ProfilePicture } from "../styles/styles";
 import { ConversationData, MessageData } from "../types/types";
 import FlexContainer from "./FlexContainer";
 
 const ConversationList = () => {
+	const theme = useTheme();
 	// const [conversations, setConversations] = useState<ConversationData[]>([]);
 
 	const conversations: ConversationData[] = [
@@ -51,6 +53,7 @@ const ConversationList = () => {
 					height="5rem"
 					width="400px"
 					padding="0.7rem 0.5rem 0.7rem 1rem"
+					color={theme.palette.secondary.main}
 				>
 					<ProfilePicture src="https://cdn.discordapp.com/attachments/792881224753872929/875159970444894218/image_2.png" />
 					<ConversationInfo
@@ -85,10 +88,10 @@ const ConversationTitle = styled.h1`
 	overflow: hidden;
 `;
 
-const Conversation = styled(FlexContainer)`
+const Conversation = styled(FlexContainer)<{ color: string }>`
 	transition: background-color 0.5s ease;
 	&:hover {
-		background-color: black;
+		background-color: ${(p) => p.color}
 	}
 `;
 

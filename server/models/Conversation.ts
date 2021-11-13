@@ -54,12 +54,10 @@ Conversation.init(
 	},
 	{
 		sequelize: db,
-		tableName: "conersation",
+		tableName: "conversation",
 		modelName: "conversation",
 	}
 );
-
-Conversation.sync();
 
 const User_Conversation = db.define("User_Conversation", {});
 
