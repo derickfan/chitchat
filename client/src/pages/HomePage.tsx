@@ -1,21 +1,19 @@
-import { Button, TextField, useTheme } from "@mui/material";
+import { Button } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { instance } from "../api";
-import styled from "@emotion/styled";
+import Conversation from "../components/Conversation";
 import ConversationList from "../components/ConversationList";
 import FlexContainer from "../components/FlexContainer";
 import { UserContext } from "../hooks/UserContext";
-import { ProfilePicture, Title } from "../styles/styles";
-import { ConversationData } from "../types/types";
-import React from "react";
+import { Title } from "../styles/styles";
+import { ConversationData, MessageData } from "../types/types";
 
 const HomePage = () => {
-	const theme = useTheme();
 	const { user, setUser } = useContext(UserContext);
 	const [conversations, setConversations] = useState<ConversationData[]>([]);
 	const [selectedConversation, setSelectedConversation] =
-		useState<ConversationData | undefined>();
-	const typingIndicatorRef = React.createRef<HTMLDivElement>();
+		useState<ConversationData | undefined>(undefined);
+
 
 	useEffect(() => {
 		instance
@@ -25,14 +23,6 @@ const HomePage = () => {
 				setConversations(response.data.data);
 			});
 	}, []);
-
-	useEffect(() => {
-		scrollIntoView()
-	}, [selectedConversation]);
-
-	const scrollIntoView = () => {
-		typingIndicatorRef.current?.scrollIntoView({behavior: "smooth"});
-	}
 
 	const logout = () => {
 		instance
@@ -45,6 +35,23 @@ const HomePage = () => {
 				console.error(error);
 			});
 	};
+
+	const sendMessage = (e: MessageData) => {
+		if (!selectedConversation) throw new Error("Something happened")
+		const newConversation = {
+			...selectedConversation,
+			messages: selectedConversation.messages.concat(e)
+		}
+		setSelectedConversation(newConversation)
+		setConversations((prevState) => {
+			return prevState.map(conversation => {
+				if (selectedConversation?.id !== conversation.id)
+					return conversation;
+				else
+					return newConversation;
+			});
+		})
+	}
 
 	return (
 		<FlexContainer direction="row" width="100vw">
@@ -70,87 +77,13 @@ const HomePage = () => {
 					Logout
 				</Button>
 			</FlexContainer>
-			<FlexContainer
-				direction="column"
-				align="center"
-				margin="1rem"
-				padding="1rem 0rem"
-				width="100%"
-			>
 			{
-				!selectedConversation ? (
-					<h1>Select a conversation or create a new one</h1>
-				) : (
-					<>
-						<h1>{selectedConversation.name}</h1>
-						<Conversation
-							height="100%"
-							align="flex-start"
-							justify="flex-start"
-						>
-							{selectedConversation.messages.map((e) => (
-								<FlexContainer
-									direction={
-										e.username === user?.username
-											? "row-reverse"
-											: "row"
-									}
-									height="auto"
-									width="100%"
-									margin="0.5rem 0"
-									// padding="0.5rem"
-									// width="500px"
-									align="flex-end"
-									justify="flex-start"
-								>
-									<ProfilePicture src="https://cdn.discordapp.com/attachments/792881224753872929/875159970444894218/image_2.png" />
-									<MessageBubble
-										color={
-											e.username === user?.username
-												? theme.palette.secondary.main
-												: theme.palette.primary.main
-										}
-										textAlign="left"
-										width="fit-content"
-										height="fit-content"
-										padding="0.5rem 1rem"
-										margin="0 1rem"
-									>
-										{e.content}
-									</MessageBubble>
-								</FlexContainer>
-							))}
-							<div ref={typingIndicatorRef}>asfsfas</div>
-						</Conversation>
-						<FlexContainer direction="row" height="auto">
-							<TextField
-								size="small"
-								placeholder="Enter your message..."
-								multiline
-								fullWidth
-							/>
-							<Button onClick={scrollIntoView}>Send</Button>
-						</FlexContainer>
-					</>
-				)
+				selectedConversation ? 
+				<Conversation sendMessage={sendMessage} selectedConversation={selectedConversation} /> 
+				: <h1>Select a conversation or create a new one</h1>
 			}
-			</FlexContainer>
 		</FlexContainer>
 	);
 };
 
 export default HomePage;
-
-const MessageBubble = styled(FlexContainer)<{ color: string }>`
-	/* word-break: break-all; */
-	max-width: 40rem;
-	background: ${(p) => p.color || "white"};
-	border-radius: 2rem;
-`;
-
-const Conversation = styled(FlexContainer)`
-	overflow: auto;
-	&::-webkit-scrollbar {
-		display: none;
-	}
-`

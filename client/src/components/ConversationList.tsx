@@ -67,6 +67,7 @@ const ConversationTitle = styled.h1`
 
 const Conversation = styled(FlexContainer)<{ color: string }>`
 	transition: background-color 0.5s ease;
+	cursor: pointer;
 	&:hover {
 		background-color: ${(p) => p.color}
 	}
