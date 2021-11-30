@@ -12,6 +12,7 @@ interface StyleProps {
 	outline?: string;
 	padding?: string;
 	margin?: string;
+	position?: string;
 	onClick?: () => void;
 	ref?: React.RefObject<HTMLDivElement>;
 }
@@ -39,4 +40,5 @@ const StyledFlexContainer = styled.div<StyleProps>`
 	/* outline: ${(p) => p.outline || "1px solid white"}; */
 	padding: ${(p) => p.padding || "0"};
 	margin: ${(p) => p.margin || "0"};
+	position: ${(p) => p.position || "initial"};
 `;
