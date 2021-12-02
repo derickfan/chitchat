@@ -1,12 +1,18 @@
-import { Button } from "@mui/material";
+import {
+	Button,
+	Modal,
+	SelectChangeEvent,
+} from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { instance } from "../api";
 import Conversation from "../components/Conversation";
 import ConversationList from "../components/ConversationList";
 import FlexContainer from "../components/FlexContainer";
+import { useToggle } from "../hooks/ToggleState";
 import { UserContext } from "../hooks/UserContext";
 import { Title } from "../styles/styles";
 import { ConversationData, MessageData } from "../types/types";
+import CreateConversationModal from "../components/CreateConversationModal";
 
 const HomePage = () => {
 	const { user, setUser } = useContext(UserContext);
@@ -14,6 +20,9 @@ const HomePage = () => {
 	const [selectedConversation, setSelectedConversation] = useState<
 		ConversationData | undefined
 	>(undefined);
+	const [isCreatingConversation, toggleIsCreatingConversation] =
+		useToggle(false);
+	const [users, setUsers] = useState<string[]>([]);
 
 	useEffect(() => {
 		instance
@@ -61,24 +70,64 @@ const HomePage = () => {
 		});
 	};
 
+	const createConversation = () => {
+		console.log(`Creating a new conversation with ${users}`);
+	};
+
+	const addUser = (event: SelectChangeEvent<string[]>) => {
+		const {
+			target: { value },
+		} = event;
+		setUsers(typeof value === "string" ? value.split(",") : value);
+		console.log(users);
+	};
+
 	return (
 		<FlexContainer direction="row" width="100vw">
+			<Modal
+				open={isCreatingConversation}
+				style={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+				}}
+				onClose={() => toggleIsCreatingConversation()}
+			>
+				<CreateConversationModal
+					createConversation={createConversation}
+					addUser={addUser}
+					users={users}
+				/>
+			</Modal>
 			<FlexContainer direction="column" padding="1rem 2rem" width="400px">
 				<Title>ChitChat</Title>
 				<ConversationList
 					conversations={conversations}
 					selectConversation={setSelectedConversation}
 				/>
-				<Button
-					variant="outlined"
-					color="primary"
-					type="submit"
-					onClick={logout}
-					disableElevation={true}
-					fullWidth
+				<FlexContainer
+					direction="column"
+					height="100px"
+					justify="space-between"
 				>
-					Logout
-				</Button>
+					<Button
+						onClick={() => toggleIsCreatingConversation()}
+						variant="contained"
+						fullWidth
+					>
+						Create Conversation
+					</Button>
+					<Button
+						variant="outlined"
+						color="primary"
+						type="submit"
+						onClick={logout}
+						disableElevation={true}
+						fullWidth
+					>
+						Logout
+					</Button>
+				</FlexContainer>
 			</FlexContainer>
 			{selectedConversation ? (
 				<Conversation
