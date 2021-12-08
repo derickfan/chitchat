@@ -22,7 +22,6 @@ const HomePage = () => {
 	>(undefined);
 	const [isCreatingConversation, toggleIsCreatingConversation] =
 		useToggle(false);
-	const [users, setUsers] = useState<string[]>([]);
 
 	useEffect(() => {
 		instance
@@ -70,17 +69,6 @@ const HomePage = () => {
 		});
 	};
 
-	const createConversation = () => {
-		console.log(`Creating a new conversation with ${users}`);
-	};
-
-	const addUser = (event: SelectChangeEvent<string[]>) => {
-		const {
-			target: { value },
-		} = event;
-		setUsers(typeof value === "string" ? value.split(",") : value);
-		console.log(users);
-	};
 
 	return (
 		<FlexContainer direction="row" width="100vw">
@@ -93,11 +81,7 @@ const HomePage = () => {
 				}}
 				onClose={() => toggleIsCreatingConversation()}
 			>
-				<CreateConversationModal
-					createConversation={createConversation}
-					addUser={addUser}
-					users={users}
-				/>
+				<CreateConversationModal />
 			</Modal>
 			<FlexContainer direction="column" padding="1rem 2rem" width="400px">
 				<Title>ChitChat</Title>

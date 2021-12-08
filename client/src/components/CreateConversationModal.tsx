@@ -10,14 +10,11 @@ import {
 	Button,
 	SelectChangeEvent,
 	Theme,
+	Autocomplete,
+	TextField,
 } from "@mui/material";
+import { useState } from "react";
 import FlexContainer from "./FlexContainer";
-
-interface IProps {
-	users: string[];
-	addUser: (event: SelectChangeEvent<string[]>) => void;
-	createConversation: () => void;
-}
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -35,8 +32,12 @@ const names = [
 	"Kelly Snyder",
 ];
 
-const CreateConversationModal = (props: IProps) => {
-	const { users, addUser, createConversation } = props;
+const CreateConversationModal = () => {
+	const [users,  setUsers] = useState<string[]>([]);
+
+	const createConversation = () => {
+		console.log(users);
+	}
 
 	return (
 		<Paper
@@ -46,32 +47,20 @@ const CreateConversationModal = (props: IProps) => {
 		>
 			<FlexContainer>
 				<FormControl sx={{ m: 1, width: "90%" }}>
-					<InputLabel id="users">Users: </InputLabel>
-					<Select
-						labelId="users"
-						label="Users"
-						multiple={true}
-						value={users}
-						onChange={addUser}
-						multiline
-						renderValue={(selected) => selected.join(", ")}
-						MenuProps={{
-							PaperProps: {
-								style: {
-									maxHeight:
-										ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-									width: "auto",
-								},
-							},
+					<Autocomplete
+						multiple
+						options={names}
+						autoHighlight
+						onChange={(e, value) => {
+							setUsers(value);
 						}}
-					>
-						{names.map((name) => (
-							<MenuItem key={name} value={name}>
-								<Checkbox checked={users.indexOf(name) > -1} />
-								<ListItemText primary={name} />
-							</MenuItem>
-						))}
-					</Select>
+						renderInput={(params) => (
+							<TextField {...params} 
+								placeholder="Users"
+								label="Users: "
+							/>
+						)}
+					/>
 					<FormHelperText>
 						Choose the users to want to add to this new conversation
 					</FormHelperText>
