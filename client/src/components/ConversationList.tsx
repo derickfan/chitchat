@@ -7,12 +7,14 @@ import FlexContainer from "./FlexContainer";
 
 interface IProps {
 	conversations: ConversationData[];
-	selectConversation: React.Dispatch<React.SetStateAction<ConversationData | undefined>>; 
+	selectConversation: React.Dispatch<
+		React.SetStateAction<ConversationData | undefined>
+	>;
 }
 
 const ConversationList = (props: IProps) => {
 	const theme = useTheme();
-	const {conversations, selectConversation} = props;
+	const { conversations, selectConversation } = props;
 	// const [conversations, setConversations] = useState<ConversationData[]>([]);
 
 	const getLatestMessageInfo = (conversation: ConversationData) => {
@@ -69,7 +71,7 @@ const Conversation = styled(FlexContainer)<{ color: string }>`
 	transition: background-color 0.5s ease;
 	cursor: pointer;
 	&:hover {
-		background-color: ${(p) => p.color}
+		background-color: ${(p) => p.color};
 	}
 `;
 

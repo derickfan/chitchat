@@ -25,12 +25,12 @@ function App() {
 						},
 				  }
 				: {
-					primary: {
-						main: '#00bfa5',
-					},
-					secondary: {
-						main: '#a7ffeb',
-					},
+						primary: {
+							main: "#00bfa5",
+						},
+						secondary: {
+							main: "#a7ffeb",
+						},
 				  }),
 		},
 	});

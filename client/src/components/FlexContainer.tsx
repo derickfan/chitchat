@@ -24,7 +24,11 @@ interface IProps extends StyleProps {
 const FlexContainer = (props: IProps) => {
 	const { children, onClick, ...styles } = props;
 
-	return <StyledFlexContainer {...styles} onClick={onClick}>{children}</StyledFlexContainer>;
+	return (
+		<StyledFlexContainer {...styles} onClick={onClick}>
+			{children}
+		</StyledFlexContainer>
+	);
 };
 
 export default FlexContainer;

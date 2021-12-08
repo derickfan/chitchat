@@ -1,23 +1,13 @@
 import {
 	Paper,
 	FormControl,
-	InputLabel,
-	Select,
-	MenuItem,
-	Checkbox,
-	ListItemText,
 	FormHelperText,
 	Button,
-	SelectChangeEvent,
-	Theme,
 	Autocomplete,
 	TextField,
 } from "@mui/material";
 import { useState } from "react";
 import FlexContainer from "./FlexContainer";
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
 
 const names = [
 	"Oliver Hansen",
@@ -33,11 +23,11 @@ const names = [
 ];
 
 const CreateConversationModal = () => {
-	const [users,  setUsers] = useState<string[]>([]);
+	const [users, setUsers] = useState<string[]>([]);
 
 	const createConversation = () => {
 		console.log(users);
-	}
+	};
 
 	return (
 		<Paper
@@ -55,7 +45,8 @@ const CreateConversationModal = () => {
 							setUsers(value);
 						}}
 						renderInput={(params) => (
-							<TextField {...params} 
+							<TextField
+								{...params}
 								placeholder="Users"
 								label="Users: "
 							/>

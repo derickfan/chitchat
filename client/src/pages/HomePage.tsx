@@ -1,8 +1,4 @@
-import {
-	Button,
-	Modal,
-	SelectChangeEvent,
-} from "@mui/material";
+import { Button, Modal } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { instance } from "../api";
 import Conversation from "../components/Conversation";
@@ -68,7 +64,6 @@ const HomePage = () => {
 			});
 		});
 	};
-
 
 	return (
 		<FlexContainer direction="row" width="100vw">
