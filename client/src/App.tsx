@@ -6,6 +6,7 @@ import RouterPage from "./pages/RouterPage";
 import { Button, CssBaseline, styled } from "@mui/material";
 import { ThemeContext } from "./hooks/ThemeContext";
 import { green } from "@mui/material/colors";
+import { SocketProvider } from "./hooks/SocketContext";
 
 function App() {
 	const { darkMode, toggleDarkMode } = useContext(ThemeContext);
@@ -38,10 +39,12 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
-			<UserProvider>
-				<AbsoluteButton onClick={toggleDarkMode}>Toggle</AbsoluteButton>
-				<RouterPage />
-			</UserProvider>
+			<SocketProvider>
+				<UserProvider>
+					<AbsoluteButton onClick={toggleDarkMode}>Toggle</AbsoluteButton>
+					<RouterPage />
+				</UserProvider>
+			</SocketProvider>
 		</ThemeProvider>
 	);
 }

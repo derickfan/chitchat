@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import { createServer } from "http";
-import { Server } from "../node_modules/socket.io/dist";
+import { Server, Socket } from "socket.io";
 import db from "./models/index";
 import User from "./models/User";
 import Conversation from "./models/Conversation";
@@ -74,6 +74,10 @@ const io = new Server(http, {
 	cors: {
 		origin: "http://localhost:3000",
 	},
+});
+
+io.on("connection", (socket: Socket) => {
+	console.log("Someone has connected");
 });
 
 app.use(
