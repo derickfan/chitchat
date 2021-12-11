@@ -9,6 +9,7 @@ import { instance } from "../api";
 import { UserContext } from "../hooks/UserContext";
 import { UserData } from "../types/types";
 import { AxiosResponse } from "axios";
+import { SocketContext } from "../hooks/SocketContext";
 
 interface IProps {
 	loginUser: () => void;
@@ -29,6 +30,7 @@ const LoginForm = (props: IProps) => {
 	const { setUser } = useContext(UserContext);
 	const { loginUser } = props;
 	const [error, setError] = useState<string>();
+	const { socket } = useContext(SocketContext);
 
 	const login = async (
 		values: FormData,
@@ -43,6 +45,7 @@ const LoginForm = (props: IProps) => {
 				const user: UserData = response.data;
 				setUser(user);
 				console.log(response);
+				socket.emit("login", user.username);
 			})
 			.catch((error) => {
 				if (error.response) {

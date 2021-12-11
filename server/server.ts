@@ -76,9 +76,22 @@ const io = new Server(http, {
 	},
 });
 
+const clients = {};
+
 io.on("connection", (socket: Socket) => {
-	console.log("Someone has connected");
+	clients[socket.id] = "Unknown User";
+	socket.on("login", async (username) => {
+		clients[socket.id] = username;
+	});
+
+	socket.on("disconnect", () => {
+		delete clients[socket.id];
+	});
 });
+
+setInterval(() => {
+	console.log(clients);
+}, 5000);
 
 app.use(
 	expressSession({
