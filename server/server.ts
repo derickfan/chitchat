@@ -79,9 +79,21 @@ const io = new Server(http, {
 const clients = {};
 
 io.on("connection", (socket: Socket) => {
-	clients[socket.id] = "Unknown User";
 	socket.on("login", async (username) => {
 		clients[socket.id] = username;
+		const conversations = await ConversationController.getUserConversationsByUsername(username);
+		conversations.forEach(conversation => {
+			socket.join(conversation.id);
+		});
+	});
+
+	socket.on("message", async (message) => {
+		const newMessage = await MessageController.createMessage(message);
+		io.to(message.conversationId).emit("message", newMessage);
+	});
+
+	socket.on("logout", () => {
+		delete clients[socket.id];
 	});
 
 	socket.on("disconnect", () => {
@@ -90,7 +102,9 @@ io.on("connection", (socket: Socket) => {
 });
 
 setInterval(() => {
-	console.log(clients);
+	console.log("==================================================");
+	console.log(Object.keys(clients).length > 0 ? clients : "No users connected");
+	console.log("==================================================");
 }, 5000);
 
 app.use(

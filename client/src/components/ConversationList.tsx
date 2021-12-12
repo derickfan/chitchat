@@ -8,7 +8,7 @@ import FlexContainer from "./FlexContainer";
 interface IProps {
 	conversations: ConversationData[];
 	selectConversation: React.Dispatch<
-		React.SetStateAction<ConversationData | undefined>
+		React.SetStateAction<ConversationData>
 	>;
 }
 

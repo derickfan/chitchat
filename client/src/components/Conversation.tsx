@@ -52,10 +52,11 @@ const Conversation = (props: IProps) => {
 				align="flex-start"
 				justify="flex-start"
 			>
-				{selectedConversation.messages.map((e) => (
+				{selectedConversation.messages.map((message, index) => (
 					<FlexContainer
+						key={index}
 						direction={
-							e.username === user?.username
+							message.username === user?.username
 								? "row-reverse"
 								: "row"
 						}
@@ -70,7 +71,7 @@ const Conversation = (props: IProps) => {
 						<ProfilePicture src="https://cdn.discordapp.com/attachments/792881224753872929/875159970444894218/image_2.png" />
 						<MessageBubble
 							color={
-								e.username === user?.username
+								message.username === user?.username
 									? theme.palette.secondary.main
 									: theme.palette.primary.main
 							}
@@ -80,7 +81,7 @@ const Conversation = (props: IProps) => {
 							padding="0.5rem 1rem"
 							margin="0 1rem"
 						>
-							{e.content}
+							{message.content}
 						</MessageBubble>
 					</FlexContainer>
 				))}

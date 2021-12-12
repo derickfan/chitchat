@@ -9,13 +9,21 @@ import { UserContext } from "../hooks/UserContext";
 import { Title } from "../styles/styles";
 import { ConversationData, MessageData, NewMessageData } from "../types/types";
 import CreateConversationModal from "../components/CreateConversationModal";
+import { SocketContext } from "../hooks/SocketContext";
+
+const initialSelectedConversation = {
+	id: "",
+	messages: [],
+	name: "",
+	users: [],
+}
 
 const HomePage = () => {
 	const { user, setUser } = useContext(UserContext);
+	const { socket } = useContext(SocketContext);
 	const [conversations, setConversations] = useState<ConversationData[]>([]);
-	const [selectedConversation, setSelectedConversation] = useState<
-		ConversationData | undefined
-	>(undefined);
+	const [selectedConversation, setSelectedConversation] =
+		useState<ConversationData>(initialSelectedConversation);
 	const [isCreatingConversation, toggleIsCreatingConversation] =
 		useToggle(false);
 
@@ -28,36 +36,51 @@ const HomePage = () => {
 			});
 	}, []);
 
+	useEffect(() => {
+		const updateConversationList = (message: MessageData) => {
+			setConversations((prevConversations) => {
+				return prevConversations.map((conversation) => {
+					if (conversation.id === message.conversationId) {
+						const newConversation = {
+							...conversation,
+							messages: conversation.messages.concat(message),
+						}
+						return newConversation;
+					} else {
+						return conversation;
+					}
+				});
+			});
+		};
+
+		socket.on("message", (message: MessageData) => {
+			updateConversationList(message);
+			console.log(message);
+		});
+
+		setSelectedConversation(conversations.find(c => selectedConversation.id === c.id) || initialSelectedConversation);
+
+		return () => {
+			socket.off("message");
+		};
+	}, [conversations]);
+
 	const logout = () => {
 		instance
 			.post("/user/logout")
 			.then((response) => {
 				setUser(undefined);
 				console.log(response);
+				socket.emit("logout");
 			})
 			.catch((error) => {
 				console.error(error);
 			});
 	};
 
-	const sendMessage = (e: NewMessageData) => {
+	const sendMessage = (message: NewMessageData) => {
 		if (!selectedConversation) throw new Error("Something happened");
-		socket.emit("message", e);
-	};
-
-	const updateConversationList = (message: MessageData) => {
-		setConversations((prevConversations) => {
-			return prevConversations.map((conversation) => {
-				if (conversation.id === message.conversationId) {
-					return {
-						...conversation,
-						messages: conversation.messages.concat(message),
-					};
-				} else {
-					return conversation;
-				}
-			});
-		});
+		socket.emit("message", message);
 	};
 
 	return (
@@ -103,7 +126,7 @@ const HomePage = () => {
 					</Button>
 				</FlexContainer>
 			</FlexContainer>
-			{selectedConversation ? (
+			{selectedConversation.users.length ? (
 				<Conversation
 					sendMessage={sendMessage}
 					selectedConversation={selectedConversation}
