@@ -7,7 +7,7 @@ import FlexContainer from "../components/FlexContainer";
 import { useToggle } from "../hooks/ToggleState";
 import { UserContext } from "../hooks/UserContext";
 import { Title } from "../styles/styles";
-import { ConversationData, MessageData } from "../types/types";
+import { ConversationData, MessageData, NewMessageData } from "../types/types";
 import CreateConversationModal from "../components/CreateConversationModal";
 
 const HomePage = () => {
@@ -40,20 +40,15 @@ const HomePage = () => {
 			});
 	};
 
-	const sendMessage = (e: MessageData) => {
+	const sendMessage = (e: NewMessageData) => {
 		if (!selectedConversation) throw new Error("Something happened");
-		const newConversation = {
-			...selectedConversation,
-			messages: selectedConversation.messages.concat(e),
-		};
-		setSelectedConversation(newConversation);
-		updateConversationList(e);
+		socket.emit("message", e);
 	};
 
 	const updateConversationList = (message: MessageData) => {
 		setConversations((prevConversations) => {
 			return prevConversations.map((conversation) => {
-				if (conversation.id === message.converstaionId) {
+				if (conversation.id === message.conversationId) {
 					return {
 						...conversation,
 						messages: conversation.messages.concat(message),

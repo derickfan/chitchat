@@ -3,12 +3,12 @@ import { Button, TextField, useTheme } from "@mui/material";
 import React, { createRef, useContext, useEffect, useState } from "react";
 import { UserContext } from "../hooks/UserContext";
 import { ProfilePicture } from "../styles/styles";
-import { ConversationData, MessageData } from "../types/types";
+import { ConversationData, NewMessageData } from "../types/types";
 import FlexContainer from "./FlexContainer";
 
 interface IProps {
 	selectedConversation: ConversationData;
-	sendMessage: (e: MessageData) => void;
+	sendMessage: (e: NewMessageData) => void;
 }
 
 const Conversation = (props: IProps) => {
@@ -28,11 +28,9 @@ const Conversation = (props: IProps) => {
 
 	const onEnter = () => {
 		if (!user) throw new Error("User not logged in");
-		const message: MessageData = {
-			id: "askfasflask",
+		const message: NewMessageData = {
 			content: text,
-			converstaionId: selectedConversation.id,
-			createdAt: new Date(),
+			conversationId: selectedConversation.id,
 			username: user?.username,
 		};
 		sendMessage(message);

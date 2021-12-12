@@ -20,10 +20,13 @@ export interface ConversationData {
 	users: string[];
 }
 
-export interface MessageData {
-	id: string;
+export interface NewMessageData {
 	content: string;
-	createdAt: Date;
 	username: string;
-	converstaionId: string;
+	conversationId: string;
+}
+
+export interface MessageData extends NewMessageData {
+	id: string;
+	createdAt: Date;
 }
