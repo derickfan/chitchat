@@ -76,3 +76,25 @@ export const getUserConversations = async (userId: string): Promise<Conversation
 		throw new Error(error);
 	}
 };
+
+export const getUserConversationsByUsername = async (username: string): Promise<Conversation[]> => {
+	try {
+		const conversations = await Conversation.findAll({
+			include: [{
+				model: User,
+				where: {
+					username: username
+				},
+				attributes: ["username"],
+				through: {
+					attributes: [],
+				},
+			}, {
+				model: Message
+			}],
+		});
+		return conversations;
+	} catch (error) {
+		throw new Error(error);
+	}
+};
