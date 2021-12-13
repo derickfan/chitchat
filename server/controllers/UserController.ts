@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import User from "../models/User";
 
 interface UserData {
@@ -28,6 +29,18 @@ export const createUser = async (data: UserData): Promise<User> => {
  */
 export const getAllUsers = async (): Promise<User[]> => {
 	const users = await User.findAll();
+	return users;
+};
+
+export const getAllOtherUsers = async (userId: string): Promise<User[]> => {
+	const users = await User.findAll({
+		attributes: ["username"],
+		where: {
+			id: {
+				[Op.not]: userId
+			}
+		}
+	});
 	return users;
 };
 
