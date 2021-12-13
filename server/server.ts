@@ -26,6 +26,11 @@ db.sync({
 		username: "johndoe",
 		password: "password"
 	});
+	const user3 = await UserController.createUser({
+		email: "testuser@gmail.com",
+		username: "testuser",
+		password: "password"
+	});
 	const conversation = await ConversationController.createConveration({
 		creatorId: user1.id,
 		usernames: [user2.username]
