@@ -18,9 +18,13 @@ const ConversationList = (props: IProps) => {
 	// const [conversations, setConversations] = useState<ConversationData[]>([]);
 
 	const getLatestMessageInfo = (conversation: ConversationData) => {
-		const latestMessage: MessageData =
-			conversation.messages[conversation.messages.length - 1];
-		return `${latestMessage.username}: ${latestMessage.content}`;
+		if (conversation.messages.length > 0) {
+			const latestMessage: MessageData =
+				conversation.messages[conversation.messages.length - 1];
+			return `${latestMessage.username}: ${latestMessage.content}`;
+		} else {
+			return "Empty Conversation"
+		}
 	};
 
 	return (
