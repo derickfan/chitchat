@@ -92,6 +92,11 @@ io.on("connection", (socket: Socket) => {
 		});
 	});
 
+	socket.on("createConversation", async (conversationData: { name: string, creatorId: string, usernames: string[] }) => {
+		const newConversation = await ConversationController.createConveration(conversationData);
+		console.log("New conversation created");
+	});
+
 	socket.on("message", async (message) => {
 		const newMessage = await MessageController.createMessage(message);
 		io.to(message.conversationId).emit("message", newMessage);

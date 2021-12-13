@@ -8,25 +8,34 @@ import {
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { instance } from "../api";
+import { SocketContext } from "../hooks/SocketContext";
 import { UserContext } from "../hooks/UserContext";
 import FlexContainer from "./FlexContainer";
 
 const CreateConversationModal = () => {
 	const { user } = useContext(UserContext);
+	const { socket } = useContext(SocketContext);
 	const [users, setUsers] = useState<string[]>([]);
 	const [availableUsers, setAvailableUsers] = useState<string[]>([]);
 
 	const createConversation = () => {
-		console.log(users);
+		if (user !== undefined && users.length > 0) {
+			const conversationName = generateConversationName([...users, user.username]);
+			socket.emit("createConversation", {
+				name: conversationName,
+				creatorId: user.id,
+				usernames: users
+			})
+		}
 	};
+
+	const generateConversationName = (listOfUsernames: string[]) => {
+		return [...listOfUsernames].sort().join(", ");
+	}
 
 	useEffect(() => {
 		if (user !== undefined) {
-			instance.get("/user/all", {
-				params: {
-					userId: user.id
-				}
-			}).then((response) => {
+			instance.get("/user/all").then((response) => {
 				const listOfUsernames = response.data.data.map((u: { username: string }) => u.username);
 				setAvailableUsers(listOfUsernames);
 			});
