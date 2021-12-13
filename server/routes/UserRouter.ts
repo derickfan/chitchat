@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
 router.get("/all", async (req, res) => {
 	try {
 		const users = req.user
-			? await UserController.getAllOtherUsers("31215169-e1fb-492a-9b5e-d4b7656d61e0") 
+			? await UserController.getAllOtherUsers(req.user.id) 
 			: await UserController.getAllUsers();
 		res.status(200).json({ data: users });
 	} catch (error) {

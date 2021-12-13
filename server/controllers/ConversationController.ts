@@ -10,9 +10,9 @@ interface ConversationData {
 }
 
 /**
- * 
+ *
  * @param data - js object used to create new user
- * @returns a newly created conversation 
+ * @returns a newly created conversation
  * @throws a generic Error
  */
 export const createConveration = async (
@@ -38,7 +38,7 @@ export const createConveration = async (
 };
 
 /**
- * 
+ *
  * @returns an array of all the Conversations in the database
  */
 export const getAllConversations = async (): Promise<Conversation[]> => {
@@ -51,25 +51,30 @@ export const getAllConversations = async (): Promise<Conversation[]> => {
 };
 
 /**
- * 
+ *
  * @param userId - the id of the user whose conversations are being returned
  * @returns an array of all the Conversations with the userId in the database
  */
-export const getUserConversations = async (userId: string): Promise<Conversation[]> => {
+export const getUserConversations = async (
+	userId: string
+): Promise<Conversation[]> => {
 	try {
 		const conversations = await Conversation.findAll({
-			include: [{
-				model: User,
-				where: {
-					id: userId,
+			include: [
+				{
+					model: User,
+					where: {
+						id: userId,
+					},
+					attributes: ["username"],
+					through: {
+						attributes: [],
+					},
 				},
-				attributes: ["username"],
-				through: {
-					attributes: [],
+				{
+					model: Message,
 				},
-			}, {
-				model: Message
-			}],
+			],
 		});
 		return conversations;
 	} catch (error) {
@@ -77,21 +82,26 @@ export const getUserConversations = async (userId: string): Promise<Conversation
 	}
 };
 
-export const getUserConversationsByUsername = async (username: string): Promise<Conversation[]> => {
+export const getUserConversationsByUsername = async (
+	username: string
+): Promise<Conversation[]> => {
 	try {
 		const conversations = await Conversation.findAll({
-			include: [{
-				model: User,
-				where: {
-					username: username
+			include: [
+				{
+					model: User,
+					where: {
+						username: username,
+					},
+					attributes: ["username"],
+					through: {
+						attributes: [],
+					},
 				},
-				attributes: ["username"],
-				through: {
-					attributes: [],
+				{
+					model: Message,
 				},
-			}, {
-				model: Message
-			}],
+			],
 		});
 		return conversations;
 	} catch (error) {
