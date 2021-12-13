@@ -1,8 +1,17 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import { Router } from "express";
 import * as UserController from "../controllers/UserController";
 import passport from "../middlewares/authentication";
 
 const router = Router();
+
+declare global {
+	namespace Express {
+		interface User {
+			id: string;
+		}
+	}
+}
 
 router.get("/", (req, res) => {
 	res.status(200).json({ data: "User Router Online" });
@@ -10,8 +19,8 @@ router.get("/", (req, res) => {
 
 router.get("/all", async (req, res) => {
 	try {
-		const users = req.body.userId 
-			? await UserController.getAllOtherUsers(req.body.userId) 
+		const users = req.user
+			? await UserController.getAllOtherUsers("31215169-e1fb-492a-9b5e-d4b7656d61e0") 
 			: await UserController.getAllUsers();
 		res.status(200).json({ data: users });
 	} catch (error) {
