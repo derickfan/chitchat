@@ -6,28 +6,32 @@ import {
 	Autocomplete,
 	TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { instance } from "../api";
+import { UserContext } from "../hooks/UserContext";
 import FlexContainer from "./FlexContainer";
 
-const names = [
-	"Oliver Hansen",
-	"Van Henry",
-	"April Tucker",
-	"Ralph Hubbard",
-	"Omar Alexander",
-	"Carlos Abbott",
-	"Miriam Wagner",
-	"Bradley Wilkerson",
-	"Virginia Andrews",
-	"Kelly Snyder",
-];
-
 const CreateConversationModal = () => {
+	const { user } = useContext(UserContext);
 	const [users, setUsers] = useState<string[]>([]);
+	const [availableUsers, setAvailableUsers] = useState<string[]>([]);
 
 	const createConversation = () => {
 		console.log(users);
 	};
+
+	useEffect(() => {
+		if (user !== undefined) {
+			instance.get("/user/all", {
+				params: {
+					userId: user.id
+				}
+			}).then((response) => {
+				const listOfUsernames = response.data.data.map((u: { username: string }) => u.username);
+				setAvailableUsers(listOfUsernames);
+			});
+		}
+	}, []);
 
 	return (
 		<Paper
@@ -39,7 +43,7 @@ const CreateConversationModal = () => {
 				<FormControl sx={{ m: 1, width: "90%" }}>
 					<Autocomplete
 						multiple
-						options={names}
+						options={availableUsers}
 						autoHighlight
 						onChange={(e, value) => {
 							setUsers(value);
