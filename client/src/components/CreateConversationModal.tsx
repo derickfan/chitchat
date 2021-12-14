@@ -12,31 +12,42 @@ import { SocketContext } from "../hooks/SocketContext";
 import { UserContext } from "../hooks/UserContext";
 import FlexContainer from "./FlexContainer";
 
-const CreateConversationModal = () => {
+interface IProps {
+	toggleIsCreatingConversation: () => void;
+}
+
+const CreateConversationModal = (props: IProps) => {
 	const { user } = useContext(UserContext);
 	const { socket } = useContext(SocketContext);
 	const [users, setUsers] = useState<string[]>([]);
+	const { toggleIsCreatingConversation } = props;
 	const [availableUsers, setAvailableUsers] = useState<string[]>([]);
 
 	const createConversation = () => {
 		if (user !== undefined && users.length > 0) {
-			const conversationName = generateConversationName([...users, user.username]);
+			const conversationName = generateConversationName([
+				...users,
+				user.username,
+			]);
 			socket.emit("createConversation", {
 				name: conversationName,
 				creatorId: user.id,
-				usernames: users
-			})
+				usernames: users,
+			});
+			toggleIsCreatingConversation();
 		}
 	};
 
 	const generateConversationName = (listOfUsernames: string[]) => {
 		return [...listOfUsernames].sort().join(", ");
-	}
+	};
 
 	useEffect(() => {
 		if (user !== undefined) {
 			instance.get("/user/all").then((response) => {
-				const listOfUsernames = response.data.data.map((u: { username: string }) => u.username);
+				const listOfUsernames = response.data.data.map(
+					(u: { username: string }) => u.username
+				);
 				setAvailableUsers(listOfUsernames);
 			});
 		}

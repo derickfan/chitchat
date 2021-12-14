@@ -16,7 +16,7 @@ const initialSelectedConversation = {
 	messages: [],
 	name: "",
 	users: [],
-}
+};
 
 const HomePage = () => {
 	const { user, setUser } = useContext(UserContext);
@@ -26,15 +26,19 @@ const HomePage = () => {
 		useState<ConversationData>(initialSelectedConversation);
 	const [isCreatingConversation, toggleIsCreatingConversation] =
 		useToggle(false);
+	const [refreshConversation, toggleRefreshConversation] = useToggle(true);
 
 	useEffect(() => {
-		instance
-			.post("/conversation/getUser", { userId: user?.id })
-			.then((response) => {
-				console.log(response.data.data);
-				setConversations(response.data.data);
-			});
-	}, []);
+		if (refreshConversation) {
+			instance
+				.post("/conversation/getUser", { userId: user?.id })
+				.then((response) => {
+					console.log(response.data.data);
+					setConversations(response.data.data);
+				});
+			toggleRefreshConversation();
+		}
+	}, [refreshConversation]);
 
 	useEffect(() => {
 		const updateConversationList = (message: MessageData) => {
@@ -44,7 +48,7 @@ const HomePage = () => {
 						const newConversation = {
 							...conversation,
 							messages: conversation.messages.concat(message),
-						}
+						};
 						return newConversation;
 					} else {
 						return conversation;
@@ -58,10 +62,19 @@ const HomePage = () => {
 			console.log(message);
 		});
 
-		setSelectedConversation(conversations.find(c => selectedConversation.id === c.id) || initialSelectedConversation);
+		socket.on("newConversation", () => {
+			toggleRefreshConversation();
+			console.log("A new conversation has been created");
+		});
+
+		setSelectedConversation(
+			conversations.find((c) => selectedConversation.id === c.id) ||
+				initialSelectedConversation
+		);
 
 		return () => {
 			socket.off("message");
+			socket.off("newConversation");
 		};
 	}, [conversations]);
 
@@ -94,7 +107,9 @@ const HomePage = () => {
 				}}
 				onClose={() => toggleIsCreatingConversation()}
 			>
-				<CreateConversationModal />
+				<CreateConversationModal
+					toggleIsCreatingConversation={toggleIsCreatingConversation}
+				/>
 			</Modal>
 			<FlexContainer direction="column" padding="1rem 2rem" width="400px">
 				<Title>ChitChat</Title>
@@ -116,10 +131,7 @@ const HomePage = () => {
 					</Button>
 					<Button
 						variant="outlined"
-						color="primary"
-						type="submit"
 						onClick={logout}
-						disableElevation={true}
 						fullWidth
 					>
 						Logout

@@ -105,7 +105,13 @@ io.on("connection", (socket: Socket) => {
 				await ConversationController.createConveration(
 					conversationData
 				);
-			console.log("New conversation created");
+			const users = await newConversation.getUsers();
+			const usernames = users.map((user) => user.username);
+			Object.keys(clients).forEach(socketID => {
+				if (usernames.includes(clients[socketID])) {
+					io.to(socketID).emit("newConversation");
+				}
+			});
 		}
 	);
 
