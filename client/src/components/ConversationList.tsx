@@ -7,9 +7,7 @@ import FlexContainer from "./FlexContainer";
 
 interface IProps {
 	conversations: ConversationData[];
-	selectConversation: React.Dispatch<
-		React.SetStateAction<ConversationData>
-	>;
+	selectConversation: React.Dispatch<React.SetStateAction<ConversationData>>;
 }
 
 const ConversationList = (props: IProps) => {
@@ -23,12 +21,12 @@ const ConversationList = (props: IProps) => {
 				conversation.messages[conversation.messages.length - 1];
 			return `${latestMessage.username}: ${latestMessage.content}`;
 		} else {
-			return "Empty Conversation"
+			return "Empty Conversation";
 		}
 	};
 
 	return (
-		<FlexContainer justify="flex-start" width="auto">
+		<ConversationContainer justify="flex-start" width="auto">
 			{conversations.map((conversation) => (
 				<Conversation
 					direction="row"
@@ -55,11 +53,18 @@ const ConversationList = (props: IProps) => {
 					</ConversationInfo>
 				</Conversation>
 			))}
-		</FlexContainer>
+		</ConversationContainer>
 	);
 };
 
 export default ConversationList;
+
+const ConversationContainer = styled(FlexContainer)`
+	overflow-y: scroll;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+`;
 
 const ConversationInfo = styled(FlexContainer)`
 	text-overflow: ellipsis;
