@@ -92,6 +92,12 @@ const Conversation = (props: IProps) => {
 					size="small"
 					placeholder="Enter your message..."
 					onChange={(e) => setText(e.target.value)}
+					onKeyPress={(e) => {
+						if (e.key === "Enter") {
+							onEnter();
+							e.preventDefault();
+						}
+					}}
 					value={text}
 					multiline
 					fullWidth
