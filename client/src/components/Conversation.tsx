@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Button, TextField, useTheme } from "@mui/material";
 import React, { createRef, useContext, useEffect, useState } from "react";
+import { SocketContext } from "../hooks/SocketContext";
 import { UserContext } from "../hooks/UserContext";
 import { ProfilePicture } from "../styles/styles";
 import { ConversationData, NewMessageData } from "../types/types";
@@ -35,7 +36,6 @@ const Conversation = (props: IProps) => {
 		};
 		sendMessage(message);
 		setText("");
-		// scrollIntoView();
 	};
 
 	return (
@@ -63,8 +63,6 @@ const Conversation = (props: IProps) => {
 						height="auto"
 						width="100%"
 						margin="0.5rem 0"
-						// padding="0.5rem"
-						// width="500px"
 						align="flex-end"
 						justify="flex-start"
 					>
@@ -111,7 +109,6 @@ const Conversation = (props: IProps) => {
 export default Conversation;
 
 const MessageBubble = styled(FlexContainer)<{ color: string }>`
-	/* word-break: break-all; */
 	max-width: 40rem;
 	background: ${(p) => p.color || "white"};
 	border-radius: 2rem;
