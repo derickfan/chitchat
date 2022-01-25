@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { io, Socket } from "socket.io-client";
-import { DefaultEventsMap } from "socket.io-client/build/typed-events";
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
 interface ContextType {
 	socket: Socket<DefaultEventsMap, DefaultEventsMap>;
