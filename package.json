@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node dist/server.js",
-    "prebuild": "eslint -c .eslintrc.json -p tsconfig.json --fix",
-    "build": "tsc --project",
+    "build": "tsc && npm run build-client",
+		"build-client": "cd client && npm run build",
     "build-prod": "cd client && npm install && npm run build && cd ..",
     "server": "nodemon --verbose --watch \"server\" --ext \"ts,json\" --exec ts-node server/server.ts",
     "client": "cd client && npm start && cd ..",
