@@ -6,8 +6,10 @@ interface ContextType {
 	socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 }
 
+const SOCKET_ENDPOINT: string = process.env.REACT_APP_SOCKET_ENDPOINT || "localhost:5000";
+
 const initialSocketContext: ContextType = {
-	socket: io("http://localhost:5000", {
+	socket: io(SOCKET_ENDPOINT, {
 		secure: false,
 	}),
 };
