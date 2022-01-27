@@ -44,6 +44,15 @@ export const getAllOtherUsers = async (userId: string): Promise<User[]> => {
 	return users;
 };
 
+export const getUser = async (username: string): Promise<User> => {
+	const user = await User.findOne({
+		where: {
+			username: username
+		}
+	});
+	return user;
+}
+
 /**
  * 
  * @param username - the name of the user that is being updated
