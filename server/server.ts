@@ -31,7 +31,7 @@ const clients = {};
 
 io.on("connection", (socket: Socket) => {
 	socket.on("login", async (username) => {
-		clients[socket.id] = username;
+		clients[socket.id] = { username: username, socket: socket };
 		const conversations =
 			await ConversationController.getUserConversationsByUsername(
 				username
@@ -55,7 +55,8 @@ io.on("connection", (socket: Socket) => {
 			const users = await newConversation.getUsers();
 			const usernames = users.map((user) => user.username);
 			Object.keys(clients).forEach(socketID => {
-				if (usernames.includes(clients[socketID])) {
+				if (usernames.includes(clients[socketID].username)) {
+					clients[socketID].socket.join(newConversation.id);
 					io.to(socketID).emit("newConversation");
 				}
 			});
@@ -76,13 +77,13 @@ io.on("connection", (socket: Socket) => {
 	});
 });
 
-setInterval(() => {
-	console.log("==================================================");
-	console.log(
-		Object.keys(clients).length > 0 ? clients : "No users connected"
-	);
-	console.log("==================================================");
-}, 5000);
+// setInterval(() => {
+// 	console.log("==================================================");
+// 	console.log(
+// 		Object.keys(clients).length > 0 ? clients : "No users connected"
+// 	);
+// 	console.log("==================================================");
+// }, 5000);
 
 app.use(
 	expressSession({
