@@ -6,3 +6,6 @@ node_js:
 install: 
   - npm ci
   - cd client && npm ci
+
+script:
+  - npm test
