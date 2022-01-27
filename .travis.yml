@@ -3,10 +3,16 @@ language: node_js
 node_js:
   - node
 
+services: 
+  - postgresql
+
 install: 
   - npm ci
   - cd client && npm ci
   - cd ..
+
+before_script:
+  - psql -c 'create database travis_db' -U postgres
 
 script:
   - npm test
