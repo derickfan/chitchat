@@ -1,5 +1,6 @@
 import { Op } from "sequelize";
 import User from "../models/User";
+import bcrypt from "bcrypt";
 
 interface UserData {
 	username: string;
@@ -73,7 +74,10 @@ export const updateUser = async (
 			},
 		});
 		if (user) {
-			user.update(key, value);
+			user.set({
+				[key]: value
+			});
+			await user.save();
 			return user;	
 		} else {
 			throw new Error("User does not exist");
@@ -95,15 +99,17 @@ export const deleteUser = async ( username: string, password: string ): Promise<
 		const user = await User.findOne({
 			where: {
 				username: username,
-				password: password,
 			}
 		});
 		if (user) {
-			await user.destroy();
+			if (bcrypt.compareSync(password, user.hashedPassword)) {
+				await user.destroy();
+			}
 		} else {
 			throw new Error("User does not exist");
 		}
 	} catch (error) {
+		console.error(error);
 		throw new Error("Unknown Error");
 	}
 };
