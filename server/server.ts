@@ -149,7 +149,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.static("../client/build"));
+app.use(express.static("dist/client"));
 
 app.use(express.json());
 app.use("/api", router);
@@ -159,5 +159,5 @@ http.listen(PORT, () => {
 });
 
 app.get("/", (req, res) => {
-	res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+	res.sendFile(path.resolve(__dirname, "client", "index.html"));
 });

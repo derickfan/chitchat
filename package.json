@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node dist/server.js",
-    "build": "tsc && npm run build-client",
+    "build": "rm -rf dist && tsc && npm run build-client",
     "build-client": "cd client && npm run build",
     "build-prod": "cd client && npm install && npm run build && cd ..",
     "server": "nodemon --verbose --watch \"server\" --ext \"ts,json\" --exec ts-node server/server.ts",
