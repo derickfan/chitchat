@@ -36,6 +36,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: cd client && npm ci && cd..
+    - run: cd client && npm ci && cd ..
     - run: psql -c 'create database travis_db' -U postgres
     - run: npm test
