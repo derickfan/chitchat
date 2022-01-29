@@ -9,6 +9,12 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  DB_TEST_HOST: postgres
+  DB_TEST_NAME: chitchat_db
+  DB_TEST_PASSWORD: postgres
+  DB_TEST_USERNAME: postgres
+
 jobs:
   build:
 
