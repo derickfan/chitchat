@@ -9,12 +9,6 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  DB_TEST_HOST: localhost
-  DB_TEST_NAME: postgres_db
-  DB_TEST_PASSWORD: password
-  DB_TEST_USERNAME: postgres_user
-
 jobs:
   build:
 
@@ -28,7 +22,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_DB: postgres_db
+          POSTGRES_DB: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_USER: postgres_user
           
@@ -40,6 +34,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
+      env:
+        DB_TEST_HOST: postgres
+        DB_TEST_NAME: postgres
+        DB_TEST_PASSWORD: password
+        DB_TEST_USERNAME: postgres_user
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
