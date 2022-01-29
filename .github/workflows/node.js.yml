@@ -10,7 +10,7 @@ on:
     branches: [ master ]
 
 env:
-  DB_TEST_HOST: postgres
+  DB_TEST_HOST: localhost
   DB_TEST_NAME: postgres_db
   DB_TEST_PASSWORD: password
   DB_TEST_USERNAME: postgres_user
