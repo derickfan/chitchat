@@ -11,7 +11,7 @@ on:
 
 env:
   DB_TEST_HOST: postgres
-  DB_TEST_NAME: chitchat_db
+  DB_TEST_NAME: postgres
   DB_TEST_PASSWORD: postgres
   DB_TEST_USERNAME: postgres
 
@@ -28,7 +28,6 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_DB: chitchat_db
           POSTGRES_PASSWORD: postgres
           
         options: >-
