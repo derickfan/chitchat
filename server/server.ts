@@ -10,7 +10,7 @@ import expressSession from "express-session";
 import passport from "./middlewares/authentication";
 
 db.sync({
-	force: true
+	//force: true
 }).then(async () => {
 	console.log("Connected to the database");
 });
